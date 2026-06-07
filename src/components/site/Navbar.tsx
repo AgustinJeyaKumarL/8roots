@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import logo from "@/assets/8roots-logo.png";
+import { BrandLogo } from "@/components/site/BrandLogo";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
@@ -39,34 +39,48 @@ export function Navbar() {
       transition={{ duration: 0.9, ease: easeLux, delay: 0.2 }}
       className={cn(
         "fixed top-0 inset-x-0 z-50 transition-all duration-500",
-        scrolled ? "glass-strong py-3" : "py-5 bg-transparent",
+        scrolled ? "navbar-bar-scrolled py-3" : "navbar-bar py-5",
       )}
     >
       <div className="container mx-auto px-6 flex items-center justify-between">
         <a href="#top" className="flex items-center group">
-          <motion.img
-            src={logo}
-            alt="8Roots Consulting"
-            className="h-14 w-auto object-contain"
-            whileHover={{ scale: 1.04 }}
-            transition={{ duration: 0.5, ease: easeLux }}
+          <BrandLogo
+            className="h-14"
+            motionProps={{
+              whileHover: { scale: 1.04 },
+              transition: { duration: 0.5, ease: easeLux },
+            }}
           />
         </a>
         <nav className="hidden md:flex items-center gap-8">
           {links.map((l) => (
-            <a key={l.href} href={l.href} className="relative text-sm text-muted-foreground hover:text-foreground transition-colors py-1">
+            <a
+              key={l.href}
+              href={l.href}
+              className={cn(
+                "relative text-sm transition-colors py-1",
+                active === l.id
+                  ? "text-foreground font-medium"
+                  : "text-foreground/60 hover:text-foreground",
+              )}
+            >
               {l.label}
               {active === l.id && (
                 <motion.span
                   layoutId="nav-underline"
-                  className="absolute -bottom-1 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary to-transparent"
+                  className="absolute -bottom-1 left-0 right-0 h-px bg-gradient-to-r from-foreground via-foreground/70 to-transparent"
                   transition={{ duration: 0.6, ease: easeLux }}
                 />
               )}
             </a>
           ))}
         </nav>
-        <Button asChild variant="default" size="sm" className="rounded-full px-5">
+        <Button
+          asChild
+          variant="default"
+          size="sm"
+          className="rounded-full px-5 border border-foreground/25 bg-foreground/10 text-foreground hover:bg-foreground/18 hover:border-foreground/40"
+        >
           <a href="#contact">Book Consultation</a>
         </Button>
       </div>

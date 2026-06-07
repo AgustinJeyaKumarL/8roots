@@ -1,4 +1,4 @@
-import logo from "@/assets/8roots-logo.png";
+import { BrandLogo } from "@/components/site/BrandLogo";
 import { Linkedin, Twitter, Github } from "lucide-react";
 import { motion } from "framer-motion";
 import { fadeUp, inViewMotion, inViewValues, motionKey, scrollFadeHidden, scrollFadeShown, stagger, useAnimateIn } from "@/lib/motion";
@@ -12,7 +12,7 @@ export function Footer() {
         <div className="grid md:grid-cols-4 gap-10 mb-16">
           <motion.div key={motionKey(animateIn, "footer-brand")} className="md:col-span-2" {...inViewMotion(animateIn)} variants={stagger(0.08)}>
             <motion.div variants={fadeUp} className="mb-5">
-              <img src={logo} alt="8Roots Consulting" className="h-24 w-auto object-contain" />
+              <BrandLogo className="h-24" />
             </motion.div>
             <motion.p variants={fadeUp} className="text-sm text-muted-foreground max-w-md leading-relaxed">
               Rooted in purpose. Infinite possibilities. Premium enterprise Salesforce consulting and
