@@ -1,8 +1,16 @@
-import { Cloud, Settings2, Workflow, Plug, Globe, LineChart, Code2, LifeBuoy } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
+import { BrainCircuit, Cloud, Code2, Database, Globe, LifeBuoy, LineChart, Plug, Settings2, Workflow } from "lucide-react";
 import { motion } from "framer-motion";
 import { easeLux, fadeUp, inViewMotion, inViewValues, motionKey, scrollFadeHidden, scrollFadeShown, stagger, useAnimateIn } from "@/lib/motion";
 
-const services = [
+type Service = {
+  icon: LucideIcon;
+  title: string;
+  desc?: string;
+  items?: string[];
+};
+
+const services: Service[] = [
   { icon: Cloud, title: "Salesforce Implementation", desc: "End-to-end Salesforce rollout with enterprise governance, scalable architecture and adoption strategy." },
   { icon: Settings2, title: "CRM Customization", desc: "Tailored objects, page layouts, automation and security models aligned to your business processes." },
   { icon: Workflow, title: "Salesforce Automation", desc: "Flow, Process Builder and Apex automation to eliminate manual work and accelerate execution." },
@@ -11,6 +19,30 @@ const services = [
   { icon: LineChart, title: "Sales & Service Cloud", desc: "Pipeline, forecasting, omni-channel service and case management configured for revenue growth." },
   { icon: Code2, title: "Lightning Web Components", desc: "High-performance LWC development for modern, modular and reusable Salesforce experiences." },
   { icon: LifeBuoy, title: "Support & Optimization", desc: "Managed services, health checks, release management and continuous optimization." },
+  {
+    icon: Database,
+    title: "Data Cloud",
+    items: [
+      "Unified customer data from multiple sources into a single customer profile.",
+      "Real-time customer insights and audience segmentation.",
+      "Data Cloud implementation, configuration, and optimization.",
+      "Data integration and harmonization across business systems.",
+      "AI-ready data foundation for personalized customer experiences.",
+      "Advanced analytics and reporting powered by Salesforce Data Cloud.",
+    ],
+  },
+  {
+    icon: BrainCircuit,
+    title: "Salesforce AI & MCP Integration",
+    items: [
+      "Model Context Protocol (MCP) integration with Salesforce.",
+      "Connect Salesforce Data Cloud with AI agents and external applications.",
+      "Secure real-time data access for AI-powered workflows.",
+      "Integration of Salesforce with third-party systems using MCP standards.",
+      "Agentforce and AI assistant implementation leveraging Data Cloud.",
+      "Enterprise-grade governance and security for AI-driven solutions.",
+    ],
+  },
 ];
 
 export function Services() {
@@ -37,7 +69,7 @@ export function Services() {
               {...inViewValues(animateIn, scrollFadeHidden, scrollFadeShown)}
               transition={{ duration: 0.85, ease: easeLux, delay: (i % 4) * 0.06 }}
               whileHover={{ y: -6, transition: { duration: 0.4, ease: easeLux } }}
-              className="group relative glass rounded-2xl p-6 shadow-card transition-shadow duration-500 hover:border-primary/40 hover:shadow-elevated"
+              className={`group relative glass rounded-2xl p-6 shadow-card transition-shadow duration-500 hover:border-primary/40 hover:shadow-elevated${s.items ? " sm:col-span-2" : ""}`}
             >
               <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-primary/15 via-transparent to-transparent pointer-events-none" />
               <div className="absolute inset-0 rounded-2xl pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500" style={{ boxShadow: "inset 0 0 0 1px oklch(0.88 0.01 250 / 0.25)" }} />
@@ -50,7 +82,18 @@ export function Services() {
                   <s.icon size={20} />
                 </motion.div>
                 <h3 className="font-display text-lg font-semibold mb-2 text-foreground">{s.title}</h3>
-                <p className="text-sm text-muted-foreground leading-relaxed">{s.desc}</p>
+                {s.items ? (
+                  <ul className="space-y-2 text-sm text-muted-foreground leading-relaxed">
+                    {s.items.map((item) => (
+                      <li key={item} className="flex gap-2">
+                        <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-primary/70" aria-hidden />
+                        <span>{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p className="text-sm text-muted-foreground leading-relaxed">{s.desc}</p>
+                )}
               </div>
             </motion.div>
           ))}

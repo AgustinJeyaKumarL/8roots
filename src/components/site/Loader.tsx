@@ -1,68 +1,60 @@
 import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
-import { useAnimateIn } from "@/lib/motion";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { LOADER_GIF_DURATION_MS } from "@/lib/gif-duration";
 import loaderGif from "@/assets/8roots-logo-loader.gif";
 
 const easeRevealIn: [number, number, number, number] = [0.42, 0, 1, 1];
-
-async function getGifDurationMs(src: string): Promise<number> {
-  try {
-    const bytes = new Uint8Array(await (await fetch(src)).arrayBuffer());
-    let total = 0;
-    for (let i = 0; i < bytes.length - 8; i++) {
-      if (bytes[i] === 0x21 && bytes[i + 1] === 0xf9 && bytes[i + 2] === 0x04) {
-        total += (bytes[i + 4] | (bytes[i + 5] << 8)) * 10;
-      }
-    }
-    return total > 0 ? total : 4000;
-  } catch {
-    return 4000;
-  }
-}
+const REVEAL_LEAD_MS = 200;
 
 export function Loader() {
-  const animateIn = useAnimateIn();
   const [visible, setVisible] = useState(true);
   const [revealing, setRevealing] = useState(false);
+  const timerStartedRef = useRef(false);
+  const revealTimerRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+  const imgRef = useRef<HTMLImageElement>(null);
+
+  const startRevealTimer = useCallback(() => {
+    if (timerStartedRef.current) return;
+    timerStartedRef.current = true;
+
+    revealTimerRef.current = setTimeout(
+      () => setRevealing(true),
+      Math.max(0, LOADER_GIF_DURATION_MS - REVEAL_LEAD_MS),
+    );
+  }, []);
 
   useEffect(() => {
-    if (!animateIn) return;
-    let timer: ReturnType<typeof setTimeout>;
-    let cancelled = false;
+    if (!visible) return;
 
-    getGifDurationMs(loaderGif).then((ms) => {
-      if (cancelled) return;
-      timer = setTimeout(() => setRevealing(true), Math.max(0, ms - 200));
-    });
+    if (imgRef.current?.complete) {
+      startRevealTimer();
+    }
 
-    return () => {
-      cancelled = true;
-      clearTimeout(timer);
-    };
-  }, [animateIn]);
+    return () => clearTimeout(revealTimerRef.current);
+  }, [visible, startRevealTimer]);
 
-  if (!animateIn || !visible) return null;
+  if (!visible) return null;
 
   return (
     <motion.div
       className="fixed inset-0 z-[100] flex items-center justify-center bg-black"
+      initial={{ opacity: 1 }}
       animate={{ opacity: revealing ? 0 : 1 }}
       transition={{ duration: 0.55, ease: easeRevealIn, delay: revealing ? 0.25 : 0 }}
       onAnimationComplete={() => {
         if (revealing) setVisible(false);
       }}
     >
-      <motion.div
-        initial={{ opacity: 0, scale: 0.94 }}
-        animate={{ opacity: revealing ? 0 : 1, scale: revealing ? 0.92 : 1 }}
-        transition={{ duration: 0.15, ease: easeRevealIn }}
-      >
+      {/* Unmount after one loop so the infinite GIF cannot replay while fading out. */}
+      {!revealing && (
         <img
+          ref={imgRef}
           src={loaderGif}
           alt="8Roots Consulting"
-          className="w-[min(55vw,550px)] h-auto object-contain"
+          className="relative z-10 w-[min(55vw,550px)] h-auto object-contain"
+          onLoad={startRevealTimer}
         />
-      </motion.div>
+      )}
 
       <div className="pointer-events-none absolute inset-0 flex items-center justify-center overflow-hidden">
         <motion.div

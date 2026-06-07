@@ -31,4 +31,7 @@ copyFileSync(indexPath, join(outDir, "404.html"));
 // Prevent Jekyll from stripping Vite output (e.g. _shell.html).
 writeFileSync(join(outDir, ".nojekyll"), "");
 
+// Keep GitHub Pages custom domain after each deploy.
+writeFileSync(join(outDir, "CNAME"), "8roots.in\n");
+
 console.log(`[prepare-gh-pages] Ready for deploy from ${outDir}`);

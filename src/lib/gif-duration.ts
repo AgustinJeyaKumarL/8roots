@@ -1,2 +1,2 @@
-/** Total playback length of `8roots-logo-loader.gif` (single loop, ~134 frames). */
-export const LOADER_GIF_DURATION_MS = 5580;
+/** One loop of `8roots-logo-loader.gif` (60 frames, loops=0 in file but we play once). */
+export const LOADER_GIF_DURATION_MS = 2500;
