@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Calendar, Linkedin, Mail, ArrowRight } from "lucide-react";
+import { Linkedin, Mail, ArrowRight, MessageCircle } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
@@ -34,22 +34,22 @@ export function Contact() {
             roadmap and identify quick-win automation opportunities.
           </motion.p>
           <motion.div variants={fadeUp} className="space-y-4">
-            <a href="#" className="glass rounded-xl px-5 py-4 flex items-center gap-4 hover:border-primary/40 transition-all">
-              <Calendar className="text-primary" />
+            <a href="https://api.whatsapp.com/send/?phone=919566556408&text=Hello+Team%2C+I+would+like+to+know+more+about+your+Salesforce+CRM+services.&type=phone_number&app_absent=0" className="glass rounded-xl px-5 py-4 flex items-center gap-4 hover:border-primary/40 transition-all">
+              <MessageCircle className="text-primary" />
               <div className="flex-1">
-                <div className="font-semibold text-sm">Schedule on Calendly</div>
-                <div className="text-xs text-muted-foreground">30-minute discovery call</div>
+                <div className="font-semibold text-sm">Connect on WhatsApp</div>
+                <div className="text-xs text-muted-foreground">Book a call with our team</div>
               </div>
               <ArrowRight size={16} className="text-muted-foreground" />
             </a>
-            <a href="mailto:hello@8roots.com" className="glass rounded-xl px-5 py-4 flex items-center gap-4 hover:border-primary/40 transition-all">
+            <a href="mailto:info@8roots.in" className="glass rounded-xl px-5 py-4 flex items-center gap-4 hover:border-primary/40 transition-all">
               <Mail className="text-primary" />
               <div className="flex-1">
-                <div className="font-semibold text-sm">hello@8roots.com</div>
+                <div className="font-semibold text-sm">info@8roots.in</div>
                 <div className="text-xs text-muted-foreground">Business inquiries</div>
               </div>
             </a>
-            <a href="#" className="glass rounded-xl px-5 py-4 flex items-center gap-4 hover:border-primary/40 transition-all">
+            <a href="https://www.linkedin.com/in/8roots/" className="glass rounded-xl px-5 py-4 flex items-center gap-4 hover:border-primary/40 transition-all">
               <Linkedin className="text-primary" />
               <div className="flex-1">
                 <div className="font-semibold text-sm">Connect on LinkedIn</div>
